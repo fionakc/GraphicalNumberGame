@@ -7,16 +7,25 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class NumberGame extends Application {
 
 	//fields
+	private String filePath="C:\\Users\\crookfion\\Downloads\\backgroundimage.jpg";
 	//computer generate a number
 	int compNum=(int)(Math.random()*10); //needs to be 10 to hit the number 9
 	final Text text=new Text();
@@ -38,6 +47,7 @@ public class NumberGame extends Application {
 		
 		text.setText("Guess a number!");
 		
+		//setting label text
 		pastGuesses.setAlignment(Pos.CENTER);
 		pastGuesses.setText("Past guesses: ");
 		
@@ -47,7 +57,7 @@ public class NumberGame extends Application {
 		
 		Button reset=new Button("Restart game");
 		
-				
+		//actions for the textfield
 		txfd.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			 
 		    @Override
@@ -85,6 +95,11 @@ public class NumberGame extends Application {
 		pane.setSpacing(10);
 		
 		
+		//changes background to light green
+		pane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                null, null)));
+		
+		
 		//create new HBox to hold two buttons, guess and reset
 		HBox boxes=new HBox();
 		boxes.setAlignment(Pos.CENTER);
@@ -93,12 +108,15 @@ public class NumberGame extends Application {
 		
 		//adding text and buttons and label to layout
 		pane.getChildren().addAll(instruct,text,txfd,boxes,pastGuesses);
+		
 				
 		//adding pane (layout) to scene
 		primaryStage.setScene(new Scene(pane,300, 250));
 		primaryStage.show();
 		
 	} //end start
+	
+	
 	
 	public boolean isInteger(String num) { //or could use parseInt with try/catch exceptions
 		//if num is null
@@ -159,6 +177,15 @@ public class NumberGame extends Application {
 		}	//end if valid num
 		txfd.clear();
 	} //end guessNum
+	
+	/**
+	 * BackgroundImage myBI= new BackgroundImage(new Image("my url",32,32,false,true),
+        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+          BackgroundSize.DEFAULT);
+		//then you set to your node
+		myContainer.setBackground(new Background(myBI));
+	 * @param args
+	 */
 
 	
 
