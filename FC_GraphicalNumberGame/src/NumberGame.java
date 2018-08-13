@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -19,13 +20,14 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class NumberGame extends Application {
 
 	//fields
-	private String filePath="C:\\Users\\crookfion\\Downloads\\backgroundimage.jpg";
+	//private String filePath="C:\\Users\\crookfion\\Downloads\\backgroundimage.jpg";
 	//computer generate a number
 	int compNum=(int)(Math.random()*10); //needs to be 10 to hit the number 9
 	final Text text=new Text();
@@ -44,12 +46,17 @@ public class NumberGame extends Application {
 		
 		//generating text
 		Text instruct=new Text("The computer will choose a number between 0 and 9");
+		//instruct.setFont(Font.font ("Verdana", 12));
+		instruct.setFill(Color.WHITE);
 		
 		text.setText("Guess a number!");
+		//text.setFont(Font.font ("Verdana", 10));
+		text.setFill(Color.WHITE);
 		
 		//setting label text
 		pastGuesses.setAlignment(Pos.CENTER);
 		pastGuesses.setText("Past guesses: ");
+		pastGuesses.setTextFill(Color.WHITE);
 		
 		//button generation
 		Button btn=new Button();
@@ -94,10 +101,15 @@ public class NumberGame extends Application {
 		pane.setPadding(new Insets(25,25,25,25));
 		pane.setSpacing(10);
 		
+		Image image=new Image(getClass().getResourceAsStream("backgroundimage.jpg"));
+		BackgroundImage myBI= new BackgroundImage(image,
+		        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+		          BackgroundSize.DEFAULT);
+		pane.setBackground(new Background(myBI));
 		
 		//changes background to light green
-		pane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
-                null, null)));
+//		BackgroundFill backFill=new BackgroundFill(Color.LIGHTGREEN,null, null);
+//		pane.setBackground(new Background(backFill));
 		
 		
 		//create new HBox to hold two buttons, guess and reset
@@ -143,49 +155,32 @@ public class NumberGame extends Application {
 		//need to check input data
 		boolean validNum=isInteger(txfd.getText());
 		guessNum++;
-		if(!validNum) {
-			text.setText("Please enter a valid number");			
-			if(guessNum==1) {
-				pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
-			} else {
-				pastGuesses.setText(pastGuesses.getText()+","+txfd.getText());
-			}			
+		if(!validNum || Integer.valueOf(txfd.getText())>9) {
+			text.setText("Please enter a valid number");
+			addToPastGuesses(guessNum);			
 		} else {			
 			if(compNum > Integer.valueOf(txfd.getText())) { //if compNum higher than guess
 				text.setText("Too low!");
-				if(guessNum==1) {
-					pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
-				} else {
-					pastGuesses.setText(pastGuesses.getText()+","+txfd.getText());
-				}
+				addToPastGuesses(guessNum);
 			} else if(compNum < Integer.valueOf(txfd.getText())) { //if compNum lower than guess
 				text.setText("Too high!");
-				if(guessNum==1) {
-					pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
-				} else {
-					pastGuesses.setText(pastGuesses.getText()+","+txfd.getText());
-				}
+				addToPastGuesses(guessNum);
 			} else {
 				text.setText("Congrats! You guessed right"); //guessed right
-				if(guessNum==1) {
-					pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
-				} else {
-					pastGuesses.setText(pastGuesses.getText()+","+txfd.getText());
-				}
+				addToPastGuesses(guessNum);
 			}
 			
 		}	//end if valid num
 		txfd.clear();
 	} //end guessNum
 	
-	/**
-	 * BackgroundImage myBI= new BackgroundImage(new Image("my url",32,32,false,true),
-        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-          BackgroundSize.DEFAULT);
-		//then you set to your node
-		myContainer.setBackground(new Background(myBI));
-	 * @param args
-	 */
+	public void addToPastGuesses(int guessNum) {
+		if(guessNum==1) {
+			pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
+		} else {
+			pastGuesses.setText(pastGuesses.getText()+","+txfd.getText());
+		}
+	}
 
 	
 
