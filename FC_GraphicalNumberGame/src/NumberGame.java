@@ -1,3 +1,23 @@
+/**Number Game
+ * by Fiona Crook
+ * 300442873
+ * 
+ * There is one class in this programme:
+ * NumberGame
+ * 
+ * This programme will generate a window where you can play Number Game.
+ * The computer will think of a number between 0 and 9. Your job is to guess the number.
+ * When you have entered a number into the text field, you can guess either by clicking the Guess button,
+ * or pressing the Enter key.
+ * The computer will tell you if your guess is too low, too high, the right number, or an invalid guess.
+ * Guesses could be invalid if they are not a number between 0 and 9.
+ * You can reset the game at any time by clicking the Reset button. This will wipe the previous guesses,
+ * and the computer will choose a new number.
+ * 
+ * With further time, I could implement the ability to choose the upper and lower values the computer
+ * has to guess between. At the moment, these are hard coded in the fields.
+ */
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,81 +42,88 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class NumberGame extends Application {
 
-	//fields
-	//private String filePath="C:\\Users\\crookfion\\Downloads\\backgroundimage.jpg";
-	//computer generate a number
-	int compNum=(int)(Math.random()*10); //needs to be 10 to hit the number 9
-	final Text text=new Text();
-	//create text field
-	TextField txfd=new TextField();
-	//create label
-	Label pastGuesses=new Label();
+	//Fields
+	private int width=450, height=400;
 	
+	private final Text text=new Text();
+	private TextField txfd=new TextField();
+	private Label pastGuesses=new Label();
 	
-	
-	int guessNum=0;
+	private int lowNum=0;
+	private int highNum=9;
+	private int guessNum=0;
+	private int compNum=lowNum+(int)(Math.random()*((highNum-lowNum)+1));
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		//setting window title
-		primaryStage.setTitle("Guessing Number Game");
-		
-		//generating text
-		Text instruct=new Text("The computer will choose a number between 0 and 9");
-		//instruct.setFont(Font.font ("Verdana", 12));
-		instruct.setFill(Color.WHITE);
-		
+		//setting the text attributes
 		text.setText("Guess a number!");
-		//text.setFont(Font.font ("Verdana", 10));
-		text.setFill(Color.WHITE);
+		text.setFill(Color.WHITE);	
+		text.setFont(Font.font(20));
 		
-		//setting label text
-		pastGuesses.setAlignment(Pos.CENTER);
-		pastGuesses.setText("Past guesses: ");
-		pastGuesses.setTextFill(Color.WHITE);
+		//setting the textField attributes
+		txfd.setFont(Font.font(15));
 		
-		//button generation
-		Button btn=new Button();
-		btn.setText("Guess");
-		
-		Button reset=new Button("Restart game");
-		
-		//actions for the textfield
-		txfd.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			 
+		txfd.setOnKeyPressed(new EventHandler<KeyEvent>() {		 
 		    @Override
 		    public void handle(KeyEvent event) {
 		        if(event.getCode().equals(KeyCode.ENTER)) {
 		             guessNum();
 		        }
 		    }
-		}); //end txfd keyPressed
+		}); 
 		
-		//actions for the guess button
-		btn.setOnAction(new EventHandler<ActionEvent>() {
+		
+		//guess button generation
+		Button guessBtn=new Button();
+		guessBtn.setText("Guess");
+		guessBtn.setFont(Font.font(15));
+		guessBtn.setPrefWidth(width/2-20);
+		
+		guessBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) { //what we want to happen when button pressed
+			public void handle(ActionEvent arg0) { 	
 				guessNum();		
 			}
 			
-		}); //end btn set action
+		}); 
 		
-		//actions for the reset button
+		//reset button generation
+		Button reset=new Button("Restart game");
+		reset.setFont(Font.font(15));
+		reset.setPrefWidth(width/2-20);
+		
 		reset.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) { //what we want to happen when button pressed
-				compNum=0+(int)(Math.random()*((9-0)+1));
+			public void handle(ActionEvent arg0) { 	
+				compNum=lowNum+(int)(Math.random()*((highNum-lowNum)+1));
 				text.setText("Guess a number!");
 				pastGuesses.setText("Past Guesses: ");
 				guessNum=0;
 			}
-			
-		}); //end reset set action
+		}); 
+		
+		
+		//generating instruction label
+		Label instruct=new Label("The computer will choose a number between "+lowNum+" and "+highNum);
+		instruct.setTextFill(Color.WHITE);
+		instruct.setFont(Font.font(30));
+	    instruct.setWrapText(true);
+	    instruct.setTextAlignment(TextAlignment.CENTER);
+		
+		//setting pastGuesses label text
+		pastGuesses.setAlignment(Pos.CENTER);
+		pastGuesses.setText("Past guesses: ");
+		pastGuesses.setTextFill(Color.WHITE);
+		pastGuesses.setFont(Font.font(20));
+		pastGuesses.setWrapText(true);
+		pastGuesses.setTextAlignment(TextAlignment.CENTER);
 		
 		//setting window layout
 		VBox pane=new VBox();
@@ -104,36 +131,30 @@ public class NumberGame extends Application {
 		pane.setPadding(new Insets(25,25,25,25));
 		pane.setSpacing(10);
 		
+		//importing image to use as background
 		Image image=new Image(getClass().getResourceAsStream("backgroundimage.jpg"));
-		BackgroundImage myBI= new BackgroundImage(image,
-		        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-		          BackgroundSize.DEFAULT);
+		BackgroundImage myBI= new BackgroundImage(image,BackgroundRepeat.REPEAT, 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		pane.setBackground(new Background(myBI));
-		
-		//changes background to light green
-//		BackgroundFill backFill=new BackgroundFill(Color.LIGHTGREEN,null, null);
-//		pane.setBackground(new Background(backFill));
-		
-		
+				
 		//create new HBox to hold two buttons, guess and reset
 		HBox boxes=new HBox();
 		boxes.setAlignment(Pos.CENTER);
 		boxes.setSpacing(10);
-		boxes.getChildren().addAll(btn,reset);
+		boxes.getChildren().addAll(guessBtn,reset);
 		
 		//adding text and buttons and label to layout
 		pane.getChildren().addAll(instruct,text,txfd,boxes,pastGuesses);
-		
-				
+					
 		//adding pane (layout) to scene
-		primaryStage.setScene(new Scene(pane,300, 250));
+		primaryStage.setTitle("Guessing Number Game");
+		primaryStage.setScene(new Scene(pane,width, height));
 		primaryStage.show();
 		
 	} //end start
-	
-	
-	
-	public boolean isInteger(String num) { //or could use parseInt with try/catch exceptions
+
+	//checks that the String num is an integer between lowNum and highNum
+	public boolean isInteger(String num) { //or could use parseInt with try/catch exceptions or regular expressions
 		//if num is null
 		if(num.equals(null)) {
 			return false;
@@ -145,32 +166,31 @@ public class NumberGame extends Application {
 		//convert string to individual chars, if any char is not a number
 		//also prevents negative numbers
 		for(int i=0;i<num.length();i++) {
-			char c = num.charAt(i);
-			
+			char c = num.charAt(i);		
 	        if (c < '0' || c > '9') {
 	            return false;
 	        }
-		}
-				
+		}				
 		return true;
 	}
 	
+	//takes the textfield input and compares it to the computers number
 	public void guessNum() {
-		//need to check input data
+		//uses isInteger to check input data is a valid Integer
 		boolean validNum=isInteger(txfd.getText());
 		guessNum++;
-		if(!validNum || Integer.valueOf(txfd.getText())>9 || Integer.valueOf(txfd.getText())<0) {
+		if(!validNum || Integer.valueOf(txfd.getText())>highNum || Integer.valueOf(txfd.getText())<lowNum) {
 			text.setText("Please enter a valid number");
 			addToPastGuesses(guessNum);			
 		} else {			
-			if(compNum > Integer.valueOf(txfd.getText())) { //if compNum higher than guess
+			if(compNum > Integer.valueOf(txfd.getText())) { 		//if compNum higher than guess
 				text.setText("Too low!");
 				addToPastGuesses(guessNum);
-			} else if(compNum < Integer.valueOf(txfd.getText())) { //if compNum lower than guess
+			} else if(compNum < Integer.valueOf(txfd.getText())) { 	//if compNum lower than guess
 				text.setText("Too high!");
 				addToPastGuesses(guessNum);
 			} else {
-				text.setText("Congrats! You guessed right"); //guessed right
+				text.setText("Congrats! You guessed right"); 		//guessed right
 				addToPastGuesses(guessNum);
 			}
 			
@@ -178,6 +198,7 @@ public class NumberGame extends Application {
 		txfd.clear();
 	} //end guessNum
 	
+	//adds previous guesses to the pastGuess label
 	public void addToPastGuesses(int guessNum) {
 		if(guessNum==1) {
 			pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
@@ -187,9 +208,8 @@ public class NumberGame extends Application {
 	}
 
 	
-
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-} //end NumberGame
+} 
