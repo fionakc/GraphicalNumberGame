@@ -36,6 +36,8 @@ public class NumberGame extends Application {
 	//create label
 	Label pastGuesses=new Label();
 	
+	
+	
 	int guessNum=0;
 	
 	@Override
@@ -88,9 +90,10 @@ public class NumberGame extends Application {
 		reset.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) { //what we want to happen when button pressed
-				compNum=(int)(Math.random()*10);
+				compNum=0+(int)(Math.random()*((9-0)+1));
 				text.setText("Guess a number!");
 				pastGuesses.setText("Past Guesses: ");
+				guessNum=0;
 			}
 			
 		}); //end reset set action
@@ -143,6 +146,7 @@ public class NumberGame extends Application {
 		//also prevents negative numbers
 		for(int i=0;i<num.length();i++) {
 			char c = num.charAt(i);
+			
 	        if (c < '0' || c > '9') {
 	            return false;
 	        }
@@ -155,7 +159,7 @@ public class NumberGame extends Application {
 		//need to check input data
 		boolean validNum=isInteger(txfd.getText());
 		guessNum++;
-		if(!validNum || Integer.valueOf(txfd.getText())>9) {
+		if(!validNum || Integer.valueOf(txfd.getText())>9 || Integer.valueOf(txfd.getText())<0) {
 			text.setText("Please enter a valid number");
 			addToPastGuesses(guessNum);			
 		} else {			
