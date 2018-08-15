@@ -1,5 +1,5 @@
 /**Number Game
- * by Fiona Crook
+ * @author crookfion  Fiona Crook
  * 300442873
  * 
  * There is one class in this programme:
@@ -112,7 +112,9 @@ public class NumberGame extends Application {
 		
 	} //end start
 	
-	//set up all the UI items
+	/**
+	 * set up all the UI items
+	 */
 	public void initialiseUI() {
 		//setting the text attributes
 		text.setText("Guess a number!");
@@ -169,6 +171,11 @@ public class NumberGame extends Application {
 	}
 
 	//checks that the String num is an integer between lowNum and highNum
+	/**
+	 * Takes a String and checks whether it is a number
+	 * @param num - the String to be checked
+	 * @return true if num is a number, false if it is not
+	 */
 	public boolean isInteger(String num) { //or could use parseInt with try/catch exceptions or regular expressions
 		//if num is null
 		if(num.equals(null)) {
@@ -189,7 +196,9 @@ public class NumberGame extends Application {
 		return true;
 	}
 	
-	//takes the textfield input and compares it to the computers number
+	/**
+	 * takes the textfield input and compares it to the computers number
+	 */
 	public void guessNum() {
 		//uses isInteger to check input data is a valid Integer
 		boolean validNum=isInteger(txfd.getText());
@@ -213,7 +222,11 @@ public class NumberGame extends Application {
 		txfd.clear();
 	} //end guessNum
 	
-	//adds previous guesses to the pastGuess label
+	
+	/**
+	 * adds previous guesses to the pastGuess label
+	 * @param guessNum - the number to be added to the pastGuess label
+	 */
 	public void addToPastGuesses(int guessNum) {
 		if(guessNum==1) {
 			pastGuesses.setText(pastGuesses.getText()+" "+txfd.getText());
@@ -222,7 +235,10 @@ public class NumberGame extends Application {
 		}
 	}
 
-	
+	/**
+	 * the method to make everything work
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
